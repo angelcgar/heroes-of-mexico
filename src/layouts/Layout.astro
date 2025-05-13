@@ -1,0 +1,130 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+}
+
+const { title = "Héroes y Heroínas de México" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-gray-900 font-noto">
+    <div class="min-h-screen flex flex-col">
+      <header class="sticky top-0 z-50 transition-colors duration-300 bg-transparent" id="main-header">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <img src="/images/mexico-emblem.svg" alt="Emblema Nacional" class="h-12 w-auto animate-eagle-float" />
+            <span class="font-poppins font-bold text-mexico-red text-xl md:text-2xl">Héroes de México</span>
+          </div>
+          <nav class="hidden md:block">
+            <ul class="flex gap-8 font-poppins">
+              <li><a href="#inicio" class="text-mexico-green hover:text-mexico-red transition-colors">Inicio</a></li>
+              <li><a href="#timeline" class="text-mexico-green hover:text-mexico-red transition-colors">Línea del Tiempo</a></li>
+              <li><a href="#galeria" class="text-mexico-green hover:text-mexico-red transition-colors">Galería</a></li>
+            </ul>
+          </nav>
+          <button
+            class="md:hidden text-mexico-green"
+            id="mobile-menu-button"
+            aria-label="Abrir menú"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div
+          class="md:hidden bg-white shadow-lg absolute w-full left-0 top-full transform -translate-y-full opacity-0 invisible transition-all duration-300"
+          id="mobile-menu"
+        >
+          <ul class="flex flex-col py-4 px-6 font-poppins">
+            <li class="py-2"><a href="#inicio" class="text-mexico-green hover:text-mexico-red transition-colors">Inicio</a></li>
+            <li class="py-2"><a href="#timeline" class="text-mexico-green hover:text-mexico-red transition-colors">Línea del Tiempo</a></li>
+            <li class="py-2"><a href="#galeria" class="text-mexico-green hover:text-mexico-red transition-colors">Galería</a></li>
+          </ul>
+        </div>
+      </header>
+
+      <main class="flex-grow">
+        <slot />
+      </main>
+
+      <footer class="bg-mexico-green text-white py-8">
+        <div class="container mx-auto px-4">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+              <h3 class="font-poppins font-bold text-xl mb-2">Héroes y Heroínas de México</h3>
+              <p class="text-sm opacity-80">Un homenaje a quienes forjaron nuestra patria</p>
+            </div>
+            <div class="flex gap-4">
+              <button class="px-4 py-2 bg-mexico-red rounded-md font-poppins font-semibold flex items-center gap-2 hover:animate-wave overflow-hidden">
+                <span>¡Compártelo!</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 8L22 12L18 16V13H11V11H18V8Z" fill="currentColor"/>
+                  <path d="M2 12C2 7.58172 5.58172 4 10 4H11V6H10C6.68629 6 4 8.68629 4 12C4 15.3137 6.68629 18 10 18H11V20H10C5.58172 20 2 16.4183 2 12Z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="border-t border-white/20 mt-6 pt-6 text-center text-sm opacity-70">
+            <p>&copy; 2025 - Todos los derechos reservados. Creado con amor por México.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Header scroll effect
+      const header = document.getElementById('main-header');
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.remove('bg-transparent');
+          header.classList.add('bg-white', 'shadow-md');
+        } else {
+          header.classList.remove('bg-white', 'shadow-md');
+          header.classList.add('bg-transparent');
+        }
+      });
+
+      // Mobile menu toggle
+      mobileMenuButton.addEventListener('click', () => {
+        if (mobileMenu.classList.contains('invisible')) {
+          mobileMenu.classList.remove('invisible', 'opacity-0', '-translate-y-full');
+          mobileMenu.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          mobileMenu.classList.add('invisible', 'opacity-0', '-translate-y-full');
+          mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+        }
+      });
+
+      // Close mobile menu when clicking on links
+      const mobileLinks = mobileMenu.querySelectorAll('a');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('invisible', 'opacity-0', '-translate-y-full');
+          mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+        });
+      });
+    </script>
+  </body>
+</html>

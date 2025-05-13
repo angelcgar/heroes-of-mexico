@@ -1,0 +1,31 @@
+---
+export interface Props {
+  year: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+}
+
+const { year, title, description, image, category } = Astro.props;
+---
+
+<div class="timeline-item" data-category={category}>
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="w-full md:w-1/4 shrink-0">
+      <span class="inline-block text-xl font-bold text-mexico-red">{year}</span>
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-48 object-cover rounded-md shadow-md mt-3"
+        loading="lazy"
+      />
+    </div>
+    <div class="w-full md:w-3/4">
+      <h3 class="text-2xl font-bold mb-2 text-mexico-green">{title}</h3>
+      <div class="prose text-gray-700">
+        <p set:html={description} />
+      </div>
+    </div>
+  </div>
+</div>

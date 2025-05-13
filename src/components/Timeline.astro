@@ -1,0 +1,80 @@
+---
+import TimelineItem from "./TimelineItem.astro";
+import { timeline } from "../data/timeline.js";
+---
+
+<section id="timeline" class="py-20 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="section-title text-center mx-auto">Línea del Tiempo</h2>
+    <p class="text-center max-w-3xl mx-auto mb-12 text-gray-700">
+      Desde la época prehispánica hasta la Revolución, estos personajes 
+      dejaron una huella imborrable en la historia de México
+    </p>
+    
+    <div class="timeline-filters mb-10 flex flex-wrap justify-center gap-3">
+      <button class="filter-btn active px-4 py-2 rounded-full bg-mexico-green text-white font-poppins text-sm" data-filter="all">
+        Todos
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-poppins text-sm" data-filter="prehispanico">
+        Prehispánico
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-poppins text-sm" data-filter="independencia">
+        Independencia
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-poppins text-sm" data-filter="reforma">
+        Reforma
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-poppins text-sm" data-filter="revolucion">
+        Revolución
+      </button>
+    </div>
+    
+    <div class="paper-bg p-6 md:p-10 max-w-4xl mx-auto">
+      <div class="timeline-container pl-0 md:pl-6">
+        {
+          timeline.map((item) => (
+            <TimelineItem 
+              year={item.year} 
+              title={item.title} 
+              description={item.description} 
+              image={item.image} 
+              category={item.category}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Timeline filtering
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Update active button
+      filterButtons.forEach(btn => btn.classList.remove('active', 'bg-mexico-green', 'text-white'));
+      filterButtons.forEach(btn => btn.classList.add('bg-gray-200', 'text-gray-700'));
+      button.classList.remove('bg-gray-200', 'text-gray-700');
+      button.classList.add('active', 'bg-mexico-green', 'text-white');
+      
+      // Filter timeline items
+      const filter = button.dataset.filter;
+      
+      timelineItems.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.style.display = 'block';
+          // Add animation
+          item.classList.add('animate-fadeIn');
+          setTimeout(() => {
+            item.classList.remove('animate-fadeIn');
+          }, 500);
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
